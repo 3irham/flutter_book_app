@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_book_app/models/book_detail_response.dart';
+import 'package:flutter_book_app/models/book_list_response.dart';
 import 'package:flutter_book_app/views/image_view_screen.dart';
 import 'package:http/http.dart' as http;
 
@@ -29,6 +30,25 @@ class _DetailBookPageState extends State<DetailBookPage> {
       setState(() {
         final jsonDetail = jsonDecode(response.body);
         detailBook = BookDetailResponse.fromJson(jsonDetail);
+      });
+      fetchSimiliarBookApi(detailBook!.title!);
+    }
+  }
+
+  BookListResponse? similiarBooks;
+  fetchSimiliarBookApi(String title) async {
+    print('response: ${widget.isbn}');
+    var url = Uri.parse('https://api.itbook.store/1.0/search/${title}');
+    var response = await http.get(url);
+    print('Response status: ${response.statusCode}');
+    print('Response body: ${response.body}');
+
+    // print(await http.read(Uri.parse('https://example.com/foobar.txt')));
+
+    if (response.statusCode == 200) {
+      setState(() {
+        final jsonDetail = jsonDecode(response.body);
+        similiarBooks = BookListResponse.fromJson(jsonDetail);
       });
     }
   }
@@ -149,6 +169,41 @@ class _DetailBookPageState extends State<DetailBookPage> {
                       Text('Language: ${detailBook!.language!}'),
                     ],
                   ),
+                  const SizedBox(height: 20),
+                  const Divider(
+                    height: 1,
+                    color: Colors.black,
+                  ),
+                  const SizedBox(height: 20),
+                  similiarBooks == null
+                      ? const Center(child: CircularProgressIndicator())
+                      : SizedBox(
+                          height: 180,
+                          child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: similiarBooks!.books!.length,
+                              itemBuilder: (context, index) {
+                                final current = similiarBooks!.books![index];
+                                return Container(
+                                  width: 100,
+                                  child: Column(
+                                    children: [
+                                      Image.network(
+                                        current.image!,
+                                        height: 100,
+                                      ),
+                                      Text(current.title!,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          textAlign: TextAlign.center,
+                                          style: const TextStyle(
+                                            fontSize: 12,
+                                          )),
+                                    ],
+                                  ),
+                                );
+                              }),
+                        )
                 ],
               ),
             ),
