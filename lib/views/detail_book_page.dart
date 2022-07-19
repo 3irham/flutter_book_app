@@ -49,50 +49,92 @@ class _DetailBookPageState extends State<DetailBookPage> {
       ),
       body: detailBook == null
           ? const Center(child: CircularProgressIndicator())
-          : Column(
-              children: [
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.end,
-                  children: [
-                    GestureDetector(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => ImageViewScreen(
-                              imageUrl: detailBook!.image!,
+          : Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: Column(
+                children: [
+                  Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ImageViewScreen(
+                                imageUrl: detailBook!.image!,
+                              ),
                             ),
-                          ),
-                        );
-                      },
-                      child: Image.network(
-                        detailBook!.image!,
-                        height: 100,
+                          );
+                        },
+                        child: Image.network(
+                          detailBook!.image!,
+                          height: 150,
+                        ),
                       ),
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              detailBook!.title!,
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                            Text(
+                              detailBook!.authors!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                // fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            SizedBox(height: 12),
+                            Text(
+                              detailBook!.subtitle!,
+                              style: TextStyle(
+                                fontSize: 12,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey,
+                              ),
+                            ),
+                            Text(
+                              detailBook!.price!,
+                              style: TextStyle(
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.green,
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                  SizedBox(height: 20),
+                  SizedBox(
+                    width: double.infinity,
+                    child: ElevatedButton(
+                      child: const Text('Buy'),
+                      onPressed: () {},
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 12),
-                      child: Text(detailBook!.title!),
-                    ),
-                  ],
-                ),
-                Text(detailBook!.subtitle!),
-                Text(detailBook!.price!),
-                // isbn10
-                Text(detailBook!.isbn10!),
-                // isbn13
-                Text(detailBook!.isbn13!),
-                // pages
-                Text(detailBook!.pages!.toString()),
-                // authors
-                Text(detailBook!.authors!),
-                // publisher
-                Text(detailBook!.publisher!),
-                // desc
-                Text(detailBook!.desc!),
-                // rating
-                Text(detailBook!.rating!.toString()),
-              ],
+                  ),
+                  SizedBox(height: 20),
+                  Column(
+                    children: [
+                      Text(detailBook!.desc!),
+                      // Text(detailBook!.isbn10!),
+                      // Text(detailBook!.isbn13!),
+                      Text(detailBook!.publisher!),
+                      Text(detailBook!.pages!.toString()),
+                      // Text(detailBook!.rating!.toString()),
+                    ],
+                  ),
+                ],
+              ),
             ),
     );
   }
