@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_book_app/models/book_detail_response.dart';
+import 'package:flutter_book_app/views/image_view_screen.dart';
 import 'package:http/http.dart' as http;
 
 class DetailBookPage extends StatefulWidget {
@@ -53,9 +54,21 @@ class _DetailBookPageState extends State<DetailBookPage> {
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.end,
                   children: [
-                    Image.network(
-                      detailBook!.image!,
-                      height: 100,
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ImageViewScreen(
+                              imageUrl: detailBook!.image!,
+                            ),
+                          ),
+                        );
+                      },
+                      child: Image.network(
+                        detailBook!.image!,
+                        height: 100,
+                      ),
                     ),
                     Padding(
                       padding: const EdgeInsets.only(bottom: 12),
@@ -63,6 +76,22 @@ class _DetailBookPageState extends State<DetailBookPage> {
                     ),
                   ],
                 ),
+                Text(detailBook!.subtitle!),
+                Text(detailBook!.price!),
+                // isbn10
+                Text(detailBook!.isbn10!),
+                // isbn13
+                Text(detailBook!.isbn13!),
+                // pages
+                Text(detailBook!.pages!.toString()),
+                // authors
+                Text(detailBook!.authors!),
+                // publisher
+                Text(detailBook!.publisher!),
+                // desc
+                Text(detailBook!.desc!),
+                // rating
+                Text(detailBook!.rating!.toString()),
               ],
             ),
     );
